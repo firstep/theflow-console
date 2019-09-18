@@ -1,29 +1,22 @@
-# theflow-console
+# TheFlow Console UI
+### Baseed on vue2 and vuetify2
 
-## Project setup
-```
-npm install
-```
+## Getting start
+1. `git clone https://github.com/firstep/theflow-console.git`
+1. `npm install`
+1. `npm run dev`
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+> Use cnpm instead `npm` in china
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Config
+> `.env - for production environment`
 
-### Run your tests
-```
-npm run test
-```
+> `.env.dev - for devolpment environment`
 
-### Lints and fixes files
-```
-npm run lint
-```
+> `.env.test - for test environment`
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+```javascript
+//config backend baseurl
+VUE_APP_BASEURL=http://localhost:8080
+```
+> Get backend source code: [https://github.com/firstep/theflow](https://github.com/firstep/theflow)
