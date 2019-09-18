@@ -19,16 +19,17 @@
             mdi-play-circle-outline
           </v-icon>
           <v-icon
+            v-if="editable"
             class="mr-2"
             @click="pause(item.id, item.suspended)"
             title="PAUSE"
           >
             {{ item.suspended ? "mdi-replay" : "mdi-pause-circle-outline" }}
           </v-icon>
-          <v-icon class="mr-2" @click="del(item.id)" title="DELETE">
+          <v-icon v-if="editable" class="mr-2" @click="del(item.id)" title="DELETE">
             mdi-trash-can-outline
           </v-icon>
-          <v-icon @click="showDiagram(item.id)" title="Diagram">
+          <v-icon @click="showDiagram(item.id)" title="DIAGRAM">
             mdi-image-outline
           </v-icon>
         </template>
@@ -45,10 +46,10 @@
             <v-icon @click="showHistory(item.id)" title="TASKS">
               mdi-clock-outline
             </v-icon>
-            <v-icon @click="delHistory(item.id)" title="DELETE">
+            <v-icon v-if="editable" @click="delHistory(item.id)" title="DELETE">
               mdi-trash-can-outline
             </v-icon>
-            <v-icon @click="showDiagram(item.id)" title="Diagram">
+            <v-icon @click="showDiagram(item.id)" title="DIAGRAM">
               mdi-image-outline
             </v-icon>
           </template>
@@ -92,7 +93,8 @@
           { text: "DURATION TIME", value: "durationMills" },
           { text: "DELETE REASON", value: "deleteReason" },
           { text: "ACTIONS", value: "action", sortable: false, align: "center" }
-        ]
+        ],
+        editable: this.$PERMISSION.editable('process')
       };
     },
     methods: {

@@ -13,10 +13,10 @@
         <v-icon class="mr-2" @click="start(item)" title="START">
           mdi-play-circle-outline
         </v-icon>
-        <v-icon class="mr-2" @click="pause(item.id, item.suspended)" :title="item.suspended ? 'ACTIVE' : 'PAUSE'">
+        <v-icon v-if="editable" class="mr-2" @click="pause(item.id, item.suspended)" :title="item.suspended ? 'ACTIVE' : 'PAUSE'">
           {{ item.suspended ? "mdi-replay" : "mdi-pause-circle-outline" }}
         </v-icon>
-        <v-icon class="mr-2" @click="del(item.id)" title="DELETE" loading="true">
+        <v-icon v-if="editable" class="mr-2" @click="del(item.id)" title="DELETE" loading="true">
           mdi-trash-can-outline
         </v-icon>
         <v-icon @click="diagram(item.id)" title="DIAGRAM" loading="true">
@@ -27,13 +27,14 @@
   </div>
 </template>
 <script>
+  import helper from "@/components/helper"
   import AppTable from "@/components/Table";
-  import UploadDialog from "@/views/dialog/Upload.vue";
+  // import UploadDialog from "@/views/dialog/Upload.vue";
   import StartProcess from "@/views/dialog/StartProcess.vue";
   import ImageView from "@/views/dialog/ImageView.vue";
   export default {
     name: "",
-    components: { AppTable },
+    components: { AppTable, StartProcess, ImageView },
     data() {
       return {
         overlay: false,
@@ -48,7 +49,8 @@
           },
           { text: "VERSION", value: "version" },
           { text: "ACTIONS", value: "action", sortable: false }
-        ]
+        ],
+        editable: this.$PERMISSION.editable('definition')
       };
     },
     methods: {

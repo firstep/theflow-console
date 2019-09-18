@@ -14,10 +14,10 @@
     </v-tabs>
     <v-tabs-items v-model="tab" class="tab-content">
       <v-tab-item key="process">
-          <iframe src="/modeler/#/processes" frameborder="0" height="100%" width="100%" scrolling="no" ></iframe>
+          <iframe v-if="editable" src="/modeler/#/processes" frameborder="0" height="100%" width="100%" scrolling="no" ></iframe>
       </v-tab-item>
       <v-tab-item key="form">
-          <iframe src="/modeler/#/forms" frameborder="0" height="100%" width="100%" scrolling="no" ></iframe>
+          <iframe v-if="editable" src="/modeler/#/forms" frameborder="0" height="100%" width="100%" scrolling="no" ></iframe>
       </v-tab-item>
     </v-tabs-items>
   </div>
@@ -29,7 +29,8 @@ export default {
   data() {
     return {
       overlay: false,
-      tab: null
+      tab: null,
+      editable: this.$PERMISSION.editable('definition')
     }
   },
   methods: {

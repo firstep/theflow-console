@@ -51,11 +51,13 @@ export default {
         let data = {username: this.username, password: this.password}
         let response = await this.$REST.post('auth', data);
         if(response){
-            localStorage.setItem('username', response.name || response.id)
-            localStorage.setItem('permissions', JSON.stringify(response.permissions))
+            this.$HELPER.session.reset(response)
             this.$router.push("/")
         }
       }
+    },
+    created: function() {
+        this.$HELPER.session.clear()
     }
 }
 </script>

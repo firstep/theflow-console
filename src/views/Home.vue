@@ -24,8 +24,8 @@
           </v-btn>
         </template>
         <v-list dense>
-          <v-list-item >
-            <v-list-item-title>LOGOUT</v-list-item-title>
+          <v-list-item link="true">
+            <v-list-item-title @click="logout">LOGOUT</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -57,11 +57,14 @@ export default {
   data() {
     return {
       drawer: null,
-      username: ''
+      username: this.$HELPER.session.username
     }
   },
-  mounted: function() {
-    this.username = localStorage.getItem('username')
+  methods: {
+    logout: async function() {
+      let rst = await this.$REST.post('logout');
+      this.$router.push("/login")
+    }
   }
 }
 
@@ -79,7 +82,7 @@ export default {
     padding-left: 10px;
   }
   .v-app-bar__nav-icon{
-  	margin-left: 80px;
+  	margin-left: 65px;
   }
   .fill-height > div{
     height: 100%;
