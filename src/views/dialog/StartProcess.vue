@@ -102,7 +102,9 @@
                   return 
                 }
                 let rst = await this.$REST.post("/flow/process", this.postData)
-                this.$emit("submit", rst);
+                if(rst) {
+                  this.$emit("submit", rst);
+                }
               } else {
                 this.$refs.settingForm.validate();
               }

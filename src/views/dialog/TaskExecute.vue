@@ -30,7 +30,7 @@
     props: {
       execute: Function,
       value: Object,
-      task: Object,
+      task: [Object, String],
       title: {
         type: String,
         default: "Execute Task"
@@ -98,8 +98,10 @@
                   return 
                 }
                 if(this.execute) {
-                  let rst = this.execute(this.postData)
-                  this.$emit("submit", rst);
+                  let rst = await this.execute(this.postData)
+                  if(rst) {
+                    this.$emit("submit", rst);
+                  }
                 } else {
                   this.$emit("submit", this.postData);
                 }
@@ -119,10 +121,18 @@
       }
     },
     async asyncData({params}) {
+      debugger
       let task = params.task
-      if(!task || !task.formKey) return
-      let data = await vm.$REST.get(`/flow/tasks/${task.id}/form`)
-      return {form: data}
+      if(!task) return
+      let taskId = task
+      if(typeof(task) == 'object') {
+        if(!task.formKey) return
+        taskId = task.id
+      }
+      let data = await vm.$REST.get(`/flow/tasks/${taskId}/form`)
+      if(typeof(data) == 'object') {
+        return {form: data}
+      }
     }
   };
 </script>
