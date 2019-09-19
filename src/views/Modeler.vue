@@ -24,9 +24,9 @@
 </template>
 
 <script>
-import DefinitionSel from "@/views/dialog/DefinitionSel.vue";
+import DefinitionSel from '@/views/dialog/DefinitionSel.vue'
 export default {
-  data() {
+  data () {
     return {
       overlay: false,
       tab: null,
@@ -37,53 +37,53 @@ export default {
 
   },
   components: {
-    
+
   },
-  created: function() {
+  created: function () {
     let that = this
-    window.vm.$on('publish-process', async function(id) {
-      if(!id) return
+    window.vm.$on('publish-process', async function (id) {
+      if (!id) return
       let confirm = await this.$dialog.confirm({
-        text: "Do you really want to publish it?",
-        title: "Confirm"
-      });
+        text: 'Do you really want to publish it?',
+        title: 'Confirm'
+      })
       if (!confirm) return
-      
+
       that.overlay = true
       let rst = await this.$REST.post(`/flow/definitions/models/${id}`)
       that.overlay = false
-      if(rst) {
+      if (rst) {
         this.$dialog.message.info('Publish sucess!', {
-            position: 'top'
+          position: 'top'
         })
       }
-    });
+    })
 
-    window.vm.$on('publish-form', async function(id, key) {
-      if(!id || !key) return
+    window.vm.$on('publish-form', async function (id, key) {
+      if (!id || !key) return
       let rst = await this.$dialog.showAndWait(DefinitionSel, {
         width: 640,
         formKey: key,
         persistent: true
-      });
-      if(!rst) return
+      })
+      if (!rst) return
 
       that.overlay = true
       let deploys = rst.map(def => this.$REST.post(`/flow/definitions/${def.id}/forms/models/${id}`))
       let rsts = await Promise.all(deploys)
       that.overlay = false
-      if(rsts.find(v => !v)){
+      if (rsts.find(v => !v)) {
         this.$dialog.message.error('Publish faild!', {
-            position: 'top'
+          position: 'top'
         })
       } else {
         this.$dialog.message.info('Publish sucess!', {
-            position: 'top'
+          position: 'top'
         })
       }
     })
   },
-  beforeDestroy(){
+  beforeDestroy () {
     window.vm.$off('publish-process')
     window.vm.$off('publish-form')
   }

@@ -4,7 +4,7 @@ import router from './router'
 import store from './store'
 import Rest from './components/rest'
 import Helper from './components/helper'
-import vuetify from './plugins/vuetify';
+import vuetify from './plugins/vuetify'
 import VuetifyDialog from 'vuetify-dialog'
 import 'vuetify-dialog/dist/vuetify-dialog.css'
 

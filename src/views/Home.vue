@@ -1,6 +1,6 @@
 <template>
   <v-app>
-  	<!-- left sider -->
+    <!-- left sider -->
     <v-navigation-drawer width=230 app dense permanent clipped mini-variant-width=60 :expand-on-hover="drawer">
       <AppMenu>
         <v-subheader v-if="!drawer">MEMU</v-subheader>
@@ -47,23 +47,21 @@
 </template>
 
 <script>
-import AppMenu from "@/views/Menu"
+import AppMenu from '@/views/Menu'
 
 export default {
   name: 'home',
-  components: {
-  	AppMenu
-  },
-  data() {
+  components: { AppMenu },
+  data () {
     return {
       drawer: null,
       username: this.$HELPER.session.username
     }
   },
   methods: {
-    logout: async function() {
-      let rst = await this.$REST.post('logout');
-      this.$router.push("/login")
+    logout: async function () {
+      await this.$REST.post('logout')
+      this.$router.push('/login')
     }
   }
 }
@@ -82,7 +80,7 @@ export default {
     padding-left: 10px;
   }
   .v-app-bar__nav-icon{
-  	margin-left: 65px;
+    margin-left: 65px;
   }
   .fill-height > div{
     height: 100%;

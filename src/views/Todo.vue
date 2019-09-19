@@ -98,135 +98,135 @@
 </template>
 
 <script>
-  import AppTable from "@/components/Table";
-  import AppTask from "@/views/Task";
-  import ImageView from "@/views/dialog/ImageView";
-  import TaskExecute from "@/views/dialog/TaskExecute"
-  export default {
-    components: { AppTable, AppTask, ImageView, TaskExecute },
-    data() {
-      return {
-        overlay: false,
-        tab: null,
-        todoUrl: "/flow/process/todo",
-        toclaimUrl: "/flow/process/unclaimed",
-        finishedUrl: "/flow/process/involved",
-        startedUrl: "/flow/process/started",
-        runningHeaders: [
-          { text: "BUSINESS KEY", value: "businessKey" },
-          { text: "NAME", value: "name" },
-          { text: "START USER", value: "startUser" },
-          { text: "START TIME", value: "startTime" },
-          { text: "CURRENT STEP", value: "currTaskName" },
-          { text: "STATE", value: "state" },
-          { text: "ACTIONS", value: "action", sortable: false, align: "center" }
-        ],
-        historyHeaders: [
-          { text: "BUSINESS KEY", value: "businessKey" },
-          { text: "NAME", value: "name" },
-          { text: "START USER", value: "startUser" },
-          { text: "START TIME", value: "startTime" },
-          { text: "END TIME", value: "endTime" },
-          { text: "DURATION TIME", value: "durationMills" },
-          { text: "STATE", value: "state" },
-          { text: "ACTIONS", value: "action", sortable: false, align: "center" }
-        ]
-      };
+import AppTable from '@/components/Table'
+import AppTask from '@/views/Task'
+import ImageView from '@/views/dialog/ImageView'
+import TaskExecute from '@/views/dialog/TaskExecute'
+export default {
+  components: { AppTable, AppTask },
+  data () {
+    return {
+      overlay: false,
+      tab: null,
+      todoUrl: '/flow/process/todo',
+      toclaimUrl: '/flow/process/unclaimed',
+      finishedUrl: '/flow/process/involved',
+      startedUrl: '/flow/process/started',
+      runningHeaders: [
+        { text: 'BUSINESS KEY', value: 'businessKey' },
+        { text: 'NAME', value: 'name' },
+        { text: 'START USER', value: 'startUser' },
+        { text: 'START TIME', value: 'startTime' },
+        { text: 'CURRENT STEP', value: 'currTaskName' },
+        { text: 'STATE', value: 'state' },
+        { text: 'ACTIONS', value: 'action', sortable: false, align: 'center' }
+      ],
+      historyHeaders: [
+        { text: 'BUSINESS KEY', value: 'businessKey' },
+        { text: 'NAME', value: 'name' },
+        { text: 'START USER', value: 'startUser' },
+        { text: 'START TIME', value: 'startTime' },
+        { text: 'END TIME', value: 'endTime' },
+        { text: 'DURATION TIME', value: 'durationMills' },
+        { text: 'STATE', value: 'state' },
+        { text: 'ACTIONS', value: 'action', sortable: false, align: 'center' }
+      ]
+    }
+  },
+  methods: {
+    getState: function (item) {
+      if (item.deleteReason) {
+        return { text: 'DELETED', color: '#757575' }
+      } else if (item.ended) {
+        return { text: 'FINISHED', color: 'teal' }
+      } else if (item.suspended) {
+        return { text: 'SUSPENDED', color: 'amber' }
+      } else {
+        return { text: 'ACTIVE', color: 'green' }
+      }
     },
-    methods: {
-      getState: function(item) {
-        if(item.deleteReason) {
-            return {text:"DELETED", color: "#757575"}
-        } else if(item.ended) {
-            return {text:"FINISHED", color: "teal"}
-        } else if(item.suspended) {
-            return {text:"SUSPENDED", color: "amber"}
-        } else {
-            return {text:"ACTIVE", color: "green"}
-        }
-      },
-      history(id){
-        this.$refs.taskSider.load(id, 'history');
-      },
-      async claim(id) {
-          if(!id) return
+    history (id) {
+      this.$refs.taskSider.load(id, 'history')
+    },
+    async claim (id) {
+      if (!id) return
 
-          this.overlay = true
-          let rst = await this.$REST.put(`/flow/tasks/${id}/claim`)
-          this.overlay = false
-          if(rst) {
-              this.$refs.toclaimTable.load()
-          }
-      },
-      async assignee(id) {
-        if(!id) return
-        let uid = await this.$dialog.prompt({
-          text: 'Assignee To',
-          title: 'Please input username'
-        })
-        if(!uid) return
+      this.overlay = true
+      let rst = await this.$REST.put(`/flow/tasks/${id}/claim`)
+      this.overlay = false
+      if (rst) {
+        this.$refs.toclaimTable.load()
+      }
+    },
+    async assignee (id) {
+      if (!id) return
+      let uid = await this.$dialog.prompt({
+        text: 'Assignee To',
+        title: 'Please input username'
+      })
+      if (!uid) return
 
-        this.overlay = true
-        let rst = await this.$REST.put(`/flow/tasks/${id}/assignee`, {params:{userId: uid}})
-        this.overlay = false
-        if(rst) {
-          this.$refs.todoTable.load()
-        }
-      },
-      async delegate(id) {
-        if(!id) return
-        let uid = await this.$dialog.prompt({
-          text: 'Delegate To',
-          title: 'Please input username'
-        })
-        if(!uid) return
+      this.overlay = true
+      let rst = await this.$REST.put(`/flow/tasks/${id}/assignee`, { params: { userId: uid } })
+      this.overlay = false
+      if (rst) {
+        this.$refs.todoTable.load()
+      }
+    },
+    async delegate (id) {
+      if (!id) return
+      let uid = await this.$dialog.prompt({
+        text: 'Delegate To',
+        title: 'Please input username'
+      })
+      if (!uid) return
 
-        this.overlay = true
-        let rst = await this.$REST.put(`/flow/tasks/${id}/delegate`, {params:{userId: uid}})
-        this.overlay = false
-        if(rst) {
-          this.$refs.todoTable.load()
+      this.overlay = true
+      let rst = await this.$REST.put(`/flow/tasks/${id}/delegate`, { params: { userId: uid } })
+      this.overlay = false
+      if (rst) {
+        this.$refs.todoTable.load()
+      }
+    },
+    async release (id) {
+      if (!id) return
+      let confirm = await this.$dialog.prompt({
+        text: 'If you really want to release this task?',
+        title: 'Warning'
+      })
+      if (!confirm) return
+      this.overlay = true
+      let rst = await this.$REST.put(`/flow/tasks/${id}/assignee`)
+      this.overlay = false
+      if (rst) {
+        this.$refs.todoTable.load()
+      }
+    },
+    async diagram (id) {
+      this.overlay = true
+      let img = await this.$REST.get(`/flow/process/${id}/diagram`, null, { responseType: 'arraybuffer' })
+      this.overlay = false
+      if (img) {
+        let src = 'data:image/png;base64,' + btoa(new Uint8Array(img).reduce((data, byte) => data + String.fromCharCode(byte), ''))
+        this.$dialog.show(ImageView, { url: src, width: 960 })
+      }
+    },
+    async complate (id) {
+      let rst = await this.$dialog.showAndWait(TaskExecute, {
+        task: id,
+        width: 680,
+        title: 'COMPLATE TASK',
+        persistent: true,
+        execute: data => {
+          return this.$REST.put(`/flow/tasks/${id}/complate`, data)
         }
-      },
-      async release(id) {
-        if(!id) return
-        let confirm = await this.$dialog.prompt({
-          text: "If you really want to release this task?",
-          title: "Warning"
-        });
-        if (!confirm) return;
-        this.overlay = true
-        let rst = await this.$REST.put(`/flow/tasks/${id}/assignee`)
-        this.overlay = false
-        if(rst) {
-          this.$refs.todoTable.load()
-        }
-      },
-      async diagram(id) {
-        this.overlay = true
-        let img = await this.$REST.get(`/flow/process/${id}/diagram`, null, {responseType: 'arraybuffer'})
-        this.overlay = false
-        if(img) {
-          let src = 'data:image/png;base64,'+ btoa(new Uint8Array(img).reduce((data, byte) => data + String.fromCharCode(byte), ''))
-          this.$dialog.show(ImageView, {url: src, width: 960})
-        }
-      },
-      async complate(id) {
-        let rst = await this.$dialog.showAndWait(TaskExecute, {
-          task: id, 
-          width: 680,
-          title: "COMPLATE TASK", 
-          persistent: true,
-          execute: data => {
-            return this.$REST.put(`/flow/tasks/${id}/complate`, data)
-          }
-        })
-        if(rst) {
-          this.$refs.todoTable.load()
-        }
+      })
+      if (rst) {
+        this.$refs.todoTable.load()
       }
     }
-  };
+  }
+}
 </script>
 
 <style>

@@ -61,7 +61,7 @@
   </AppTable>
   <AppTable ref="runningTaskTable" :showSelect=true :singleSelect=true :headers="runningHeaders" v-show="tag == 'running'">
     <template #header>
-      
+
     </template>
     <template #suspended="{item}">
       <v-chip :color="item.suspended ? 'grey' :'green'" small dark>{{ item.suspended ? "SUSPEND" : "ACTIVE" }}</v-chip>
@@ -74,20 +74,20 @@
 </template>
 
 <script>
-import AppTable from "@/components/Table"
-import TaskExecute from "@/views/dialog/TaskExecute"
+import AppTable from '@/components/Table'
+import TaskExecute from '@/views/dialog/TaskExecute'
 export default {
   name: 'AppTask',
-  components: {AppTable},
-  data() {
+  components: { AppTable },
+  data () {
     return {
-      rightSider : false,
+      rightSider: false,
       updated: false,
       loading: false,
       tag: '',
       processId: '',
       runningHeaders: [
-        { text: 'NAME', value: 'name'},
+        { text: 'NAME', value: 'name' },
         { text: 'OWNER', value: 'center' },
         { text: 'ASSIGNEE', value: 'assignee' },
         { text: 'CREATE TIME', value: 'createTime' },
@@ -96,119 +96,118 @@ export default {
         { text: 'SUSPENDED', value: 'suspended' }
       ],
       historyHeaders: [
-        { text: 'NAME', value: 'name'},
+        { text: 'NAME', value: 'name' },
         { text: 'ASSIGNEE', value: 'assignee' },
         { text: 'CREATE TIME', value: 'createTime' },
         { text: 'END TIME', value: 'endTime' },
         { text: 'DURATION TIME', value: 'durationMills' }
-      ],
+      ]
     }
   },
   methods: {
-    load: function(id, tag){
-      //有ID 说明是组件外调用，重置updated，没有ID说明组件内处理过，更新为updated
+    load: function (id, tag) {
+      // 有ID 说明是组件外调用，重置updated，没有ID说明组件内处理过，更新为updated
       this.updated = id ? false : (!this.updated ? true : this.updated)
       this.tag = tag || this.tag
       this.processId = id || this.processId
-      if(!this.processId) return
+      if (!this.processId) return
       this.rightSider = true
-      if(this.tag == 'running') {
+      if (this.tag === 'running') {
         this.$refs.runningTaskTable.load(`/flow/process/${this.processId}/tasks/running`)
-      }else if(this.tag == 'history'){
+      } else if (this.tag === 'history') {
         this.$refs.historyTaskTable.load(`/flow/process/${this.processId}/tasks/history`)
       }
     },
-    preAct: function(){
-      let tasks = this.$refs.runningTaskTable.selected;
-      if(tasks.length == 0){
-        this.$dialog.message.info("SELECT TASK PLEASE!", {
+    preAct: function () {
+      let tasks = this.$refs.runningTaskTable.selected
+      if (tasks.length === 0) {
+        this.$dialog.message.info('SELECT TASK PLEASE!', {
           position: 'top'
         })
         return null
       }
       return tasks[0]
     },
-    doAct: async function(uri, body, config){
+    doAct: async function (uri, body, config) {
       this.loading = true
-      
+
       let rst = await this.$REST.put(uri, body, config)
       this.loading = false
-      if(rst) this.load()
+      if (rst) this.load()
     },
-    claim: function(){
+    claim: function () {
       let task = this.preAct()
-      if(task)
-        this.doAct(`/flow/tasks/${task.id}/claim`)
+      if (task) { this.doAct(`/flow/tasks/${task.id}/claim`) }
     },
-    assignee: async function() {
+    assignee: async function () {
       let task = this.preAct()
-      if(!task) return
+      if (!task) return
 
       let uid = await this.$dialog.prompt({
         text: 'Assignee To',
         title: 'Please input username'
       })
-      if(!uid) return
+      if (!uid) return
 
-      this.doAct(`/flow/tasks/${task.id}/assignee`, null, {params:{userId: uid}})
+      this.doAct(`/flow/tasks/${task.id}/assignee`, null, { params: { userId: uid } })
     },
-    release: function(){
+    release: function () {
       let task = this.preAct()
-      if(!task) return
+      if (!task) return
 
       this.doAct(`/flow/tasks/${task.id}/assignee`)
     },
-    delegate: async function() {
+    delegate: async function () {
       let task = this.preAct()
-      if(!task) return
+      if (!task) return
 
       let uid = await this.$dialog.prompt({
         text: 'Delegate To',
         title: 'Please input username'
       })
-      if(!uid) return
+      if (!uid) return
 
-      this.doAct(`/flow/tasks/${task.id}/delegate`, null, {params:{userId: uid}})
+      this.doAct(`/flow/tasks/${task.id}/delegate`, null, { params: { userId: uid } })
     },
-    complate: async function(){
+    complate: async function () {
       let task = this.preAct()
-      if(!task) return
+      if (!task) return
 
       let rst = await this.$dialog.showAndWait(TaskExecute, {
-        task: task, 
+        task: task,
         width: 680,
-        title: "COMPLATE TASK", 
+        title: 'COMPLATE TASK',
         persistent: true,
         execute: data => {
           return this.$REST.put(`/flow/tasks/${task.id}/complate`, data)
         }
       })
-      if(rst) {
+      if (rst) {
         this.load()
       }
     },
-    reject: async function() {
+    reject: async function () {
       let task = this.preAct()
-      if(!task) return
+      if (!task) return
 
       let rst = await this.$dialog.showAndWait(TaskExecute, {
-        title:"REJECT TASK",
+        title: 'REJECT TASK',
         width: 680,
-        persistent: true, 
+        persistent: true,
         execute: data => {
           return this.$REST.put(`/flow/tasks/${task.id}/back`, data)
         }
       })
-      if(rst) {
+      if (rst) {
         this.load()
       }
     },
-    closeRightSider() {
-        this.rightSider = !this.rightSider;
-        if (this.updated) {
-          //this.$refs.runningTable.load(); 
-          this.$emit('updated')
-        }
+    closeRightSider () {
+      this.rightSider = !this.rightSider
+      if (this.updated) {
+        // this.$refs.runningTable.load();
+        this.$emit('updated')
+      }
     }
   }
 }

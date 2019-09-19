@@ -14,19 +14,19 @@ export default new Router({
       component: Home,
       children: [
         {
-          path: "/process",
+          path: '/process',
           component: () => import(/* webpackChunkName: "menu" */ './views/Process.vue')
         },
         {
-          path: "/definitions",
+          path: '/definitions',
           component: () => import(/* webpackChunkName: "menu" */ './views/Definition.vue')
         },
         {
-          path: "/todo",
+          path: '/todo',
           component: () => import(/* webpackChunkName: "menu" */ './views/Todo.vue')
         },
         {
-          path: "/design",
+          path: '/design',
           component: () => import(/* webpackChunkName: "menu" */ './views/Modeler.vue')
         }
       ]

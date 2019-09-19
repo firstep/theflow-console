@@ -28,36 +28,36 @@
 </template>
 <script>
 export default {
-    name:"AppLogin",
-    props: {
-        source: String,
-    },
-    data: () => ({
-        valid: false,
-        username: '',
-        password: '',
-        rules:[
-            v => !!v || 'Text is required',
-            v => v.length <= 60 || 'Text must be less than 10 characters.',
-            v => v.length >= 2 || 'Text must be more than 2 characters.'
-        ]
-    }),
-    methods: {
-      login: async function(){
-        if(!this.valid){
-            this.$refs.loginForm.validate()
-            return
-        }
-        let data = {username: this.username, password: this.password}
-        let response = await this.$REST.post('auth', data);
-        if(response){
-            this.$HELPER.session.reset(response)
-            this.$router.push("/")
-        }
+  name: 'AppLogin',
+  props: {
+    source: String
+  },
+  data: () => ({
+    valid: false,
+    username: '',
+    password: '',
+    rules: [
+      v => !!v || 'Text is required',
+      v => v.length <= 60 || 'Text must be less than 10 characters.',
+      v => v.length >= 2 || 'Text must be more than 2 characters.'
+    ]
+  }),
+  methods: {
+    login: async function () {
+      if (!this.valid) {
+        this.$refs.loginForm.validate()
+        return
       }
-    },
-    created: function() {
-        this.$HELPER.session.clear()
+      let data = { username: this.username, password: this.password }
+      let response = await this.$REST.post('auth', data)
+      if (response) {
+        this.$HELPER.session.reset(response)
+        this.$router.push('/')
+      }
     }
+  },
+  created: function () {
+    this.$HELPER.session.clear()
+  }
 }
 </script>

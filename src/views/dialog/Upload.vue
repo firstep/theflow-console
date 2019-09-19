@@ -14,60 +14,60 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      execute: Function,
-      value: Object
+export default {
+  props: {
+    execute: Function,
+    value: Object
+  },
+  data () {
+    return {
+      rst: null,
+      valid: false,
+      rules: [
+        value => (value && value.size !== undefined) || 'File is required.',
+        value => !value || value.size < 2000000 || 'File size should be less than 2 MB!'
+      ]
+    }
+  },
+  methods: {
+    changImg: function (file) {
+      if (file) {
+        this.rst = file
+      }
     },
-    data() {
+    actions: function () {
       return {
-        rst: null,
-        valid: false,
-        rules: [
-          value => value && value.size != undefined || "File is required.",
-          value => !value || value.size < 2000000 || "File size should be less than 2 MB!"
-        ]
-      };
-    },
-    methods: {
-      changImg: function(file) {
-          if(file){
-              this.rst = file
+        cancel: {
+          flat: true,
+          text: 'Cancel',
+          handle: () => {
+            this.$emit('submit', false)
           }
-      },
-      actions: function() {
-        return {
-          cancel: {
-            flat: true,
-            text: "Cancel",
-            handle: () => {
-              this.$emit("submit", false);
-            }
-          },
-          execute: {
-            key: "execute",
-            flat: true,
-            text: "Execute",
-            closable: false,
-            handle: async () => {
-              if (this.valid) {
-                if (this.execute) {
-                  let rsts = await this.execute(this.rst);
-                  if(rsts) {
-                      this.$emit("submit", true);
-                  }
-                } else {
-                  this.$emit("submit", this.rst);
+        },
+        execute: {
+          key: 'execute',
+          flat: true,
+          text: 'Execute',
+          closable: false,
+          handle: async () => {
+            if (this.valid) {
+              if (this.execute) {
+                let rsts = await this.execute(this.rst)
+                if (rsts) {
+                  this.$emit('submit', true)
                 }
               } else {
-                this.$refs.uploadForm.validate();
+                this.$emit('submit', this.rst)
               }
+            } else {
+              this.$refs.uploadForm.validate()
             }
           }
-        };
+        }
       }
     }
-  };
+  }
+}
 </script>
 
 <style scoped>

@@ -44,25 +44,25 @@
 </template>
 
 <script>
-  export default {
-    components: {},
-    props: {
-      fields: Array,
-      formData: Object
-    },
-    data: () => ({
-      dateMenu: {}
-    }),
-    methods: {
-      layout: function(field){
-        if(field.params && field.params.column) {
-          return `width: ${100/field.params.column}%`
-        } else {
-          return 'width: 100%'
-        }
+export default {
+  components: {},
+  props: {
+    fields: Array,
+    formData: Object
+  },
+  data: () => ({
+    dateMenu: {}
+  }),
+  methods: {
+    layout: function (field) {
+      if (field.params && field.params.column) {
+        return `width: ${100 / field.params.column}%`
+      } else {
+        return 'width: 100%'
       }
     }
-  };
+  }
+}
 </script>
 
 <style scoped>

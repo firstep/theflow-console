@@ -1,12 +1,12 @@
 <template>
   <div>
-    <v-data-table class="table-card" 
+    <v-data-table class="table-card"
       v-model="selected"
       :show-select="showSelect"
       :single-select="singleSelect"
-      :headers="headers" 
-      :items="rows" 
-      :items-per-page="3" 
+      :headers="headers"
+      :items="rows"
+      :items-per-page="3"
       :loading="loading"
       loading-text="Loading... Please wait"
       hide-default-footer>
@@ -30,7 +30,7 @@
         </slot>
       </template>
       <!-- <template v-slot:[`item.${actionColumn}`]="{ item }">
-        <slot name="action" :item="item" /> 
+        <slot name="action" :item="item" />
       </template> -->
     </v-data-table>
   </div>
@@ -38,7 +38,7 @@
 <script>
 export default {
   name: 'AppTable',
-  props:{
+  props: {
     url: String,
     showSelect: Boolean,
     singleSelect: Boolean,
@@ -47,24 +47,24 @@ export default {
       default: 10
     },
     headers: Array,
-    showPage:{
+    showPage: {
       type: Number,
       default: 5
     },
     requestHandler: {
       type: Function,
-      default: function(page, pageSize){
-        return {page: page, size: pageSize}
+      default: function (page, pageSize) {
+        return { page: page, size: pageSize }
       }
     },
     responseHandler: {
       type: Function,
-      default: function(data) {
-        return {total: data['total'], rows: data['rows']}
+      default: function (data) {
+        return { total: data['total'], rows: data['rows'] }
       }
     }
   },
-  data() {
+  data () {
     return {
       page: 1,
       total: 0,
@@ -74,36 +74,36 @@ export default {
     }
   },
   computed: {
-    totalPage: function() {
-      return Math.ceil(this.total / this.pageSize);
+    totalPage: function () {
+      return Math.ceil(this.total / this.pageSize)
     },
-    from: function(){
-      return this.total == 0 ? 0 : ((this.page - 1) * this.pageSize) + 1;
+    from: function () {
+      return this.total === 0 ? 0 : ((this.page - 1) * this.pageSize) + 1
     },
-    to: function() {
-      let to = this.page * this.pageSize;
-      return this.total === 0 || to > this.total ? this.total : to;
-    },
+    to: function () {
+      let to = this.page * this.pageSize
+      return this.total === 0 || to > this.total ? this.total : to
+    }
   },
   methods: {
-    paging(page) {
+    paging (page) {
       this.load()
     },
-    async load(url = this.url){
-      //url = url || this.url
-      if(!url) return
+    async load (url = this.url) {
+      // url = url || this.url
+      if (!url) return
       this.selected = []
       this.loading = true
       let rst = await this.$REST.get(url, this.requestHandler && this.requestHandler(this.page, this.pageSize))
       this.loading = false
-      if(rst) {
-        let data =  this.responseHandler && this.responseHandler(rst)
-        this.total = data['total'];
-        this.rows = data['rows'];
+      if (rst) {
+        let data = this.responseHandler && this.responseHandler(rst)
+        this.total = data['total']
+        this.rows = data['rows']
       }
     }
   },
-  mounted() {
+  mounted () {
     this.load()
   }
 }

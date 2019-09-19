@@ -63,93 +63,93 @@
   </div>
 </template>
 <script>
-  import AppTable from "@/components/Table";
-  import AppTask from "@/views/Task";
-  import ImageView from "@/views/dialog/ImageView.vue";
-  export default {
-    name: "AppProcess",
-    components: { AppTable, AppTask },
-    data() {
-      return {
-        overlay: false,
-        tab: null,
-        runningUrl: "/flow/process/running",
-        historyUrl: "/flow/process/history",
-        runningHeaders: [
-          { text: "BUSINESS KEY", value: "businessKey" },
-          { text: "NAME", value: "name" },
-          { text: "START USER", value: "startUser" },
-          { text: "START TIME", value: "startTime" },
-          { text: "CURRENT STEP", value: "currTaskName" },
-          { text: "STATE", value: "suspended" },
-          { text: "ACTIONS", value: "action", sortable: false, align: "center" }
-        ],
-        historyHeaders: [
-          { text: "BUSINESS KEY", value: "businessKey" },
-          { text: "NAME", value: "name" },
-          { text: "START USER", value: "startUser" },
-          { text: "START TIME", value: "startTime" },
-          { text: "END TIME", value: "endTime" },
-          { text: "DURATION TIME", value: "durationMills" },
-          { text: "DELETE REASON", value: "deleteReason" },
-          { text: "ACTIONS", value: "action", sortable: false, align: "center" }
-        ],
-        editable: this.$PERMISSION.editable('process')
-      };
-    },
-    methods: {
-      execute(id) {
-        this.$refs.taskSider.load(id, 'running');
-      },
-      async pause(id, suspended) {
-        this.overlay = true
-        let state = suspended ? "active" : "suspend";
-        let rst = await this.$REST.put(`/flow/process/${id}/${state}`);
-        this.overlay = false
-        if (rst) {
-          this.$refs.runningTable.load();
-        }
-      },
-      async del(id) {
-        let confirm = await this.$dialog.prompt({
-          text: "If you really want to delete it, input the reason please!",
-          title: "Warning"
-        })
-        if(!confirm) return
-        this.overlay = true
-        let rst = await this.$REST.delete(`/flow/process/${id}`, {reason: confirm});
-        this.overlay = false
-        if (rst) {
-          this.$refs.runningTable.load();
-        }
-      },
-      async showDiagram(id) {
-        this.overlay = true;
-        let img = await this.$REST.get(`/flow/process/${id}/diagram`, null, {responseType: 'arraybuffer'})
-        this.overlay = false;
-        if(img) {
-          let src = 'data:image/png;base64,'+ btoa(new Uint8Array(img).reduce((data, byte) => data + String.fromCharCode(byte), ''))
-          this.$dialog.show(ImageView, {url: src, width: 960, title:"ggggg"})
-        }
-      },
-      showHistory(id){
-        this.$refs.taskSider.load(id, 'history');
-      },
-      async delHistory(id) {
-        let confirm = await this.$dialog.confirm({
-          text: "Do you really want to delete it?",
-          title: "Warning"
-        })
-        if(!confirm) return
-        this.overlay = true
-        let rst = await this.$REST.delete(`/flow/process/${id}/history`, {reason: confirm});
-        this.overlay = false
-        if (rst) {
-          this.$refs.historyTable.load();
-        }
-      },
+import AppTable from '@/components/Table'
+import AppTask from '@/views/Task'
+import ImageView from '@/views/dialog/ImageView.vue'
+export default {
+  name: 'AppProcess',
+  components: { AppTable, AppTask },
+  data () {
+    return {
+      overlay: false,
+      tab: null,
+      runningUrl: '/flow/process/running',
+      historyUrl: '/flow/process/history',
+      runningHeaders: [
+        { text: 'BUSINESS KEY', value: 'businessKey' },
+        { text: 'NAME', value: 'name' },
+        { text: 'START USER', value: 'startUser' },
+        { text: 'START TIME', value: 'startTime' },
+        { text: 'CURRENT STEP', value: 'currTaskName' },
+        { text: 'STATE', value: 'suspended' },
+        { text: 'ACTIONS', value: 'action', sortable: false, align: 'center' }
+      ],
+      historyHeaders: [
+        { text: 'BUSINESS KEY', value: 'businessKey' },
+        { text: 'NAME', value: 'name' },
+        { text: 'START USER', value: 'startUser' },
+        { text: 'START TIME', value: 'startTime' },
+        { text: 'END TIME', value: 'endTime' },
+        { text: 'DURATION TIME', value: 'durationMills' },
+        { text: 'DELETE REASON', value: 'deleteReason' },
+        { text: 'ACTIONS', value: 'action', sortable: false, align: 'center' }
+      ],
+      editable: this.$PERMISSION.editable('process')
     }
-  };
+  },
+  methods: {
+    execute (id) {
+      this.$refs.taskSider.load(id, 'running')
+    },
+    async pause (id, suspended) {
+      this.overlay = true
+      let state = suspended ? 'active' : 'suspend'
+      let rst = await this.$REST.put(`/flow/process/${id}/${state}`)
+      this.overlay = false
+      if (rst) {
+        this.$refs.runningTable.load()
+      }
+    },
+    async del (id) {
+      let confirm = await this.$dialog.prompt({
+        text: 'If you really want to delete it, input the reason please!',
+        title: 'Warning'
+      })
+      if (!confirm) return
+      this.overlay = true
+      let rst = await this.$REST.delete(`/flow/process/${id}`, { reason: confirm })
+      this.overlay = false
+      if (rst) {
+        this.$refs.runningTable.load()
+      }
+    },
+    async showDiagram (id) {
+      this.overlay = true
+      let img = await this.$REST.get(`/flow/process/${id}/diagram`, null, { responseType: 'arraybuffer' })
+      this.overlay = false
+      if (img) {
+        let src = 'data:image/png;base64,' + btoa(new Uint8Array(img).reduce((data, byte) => data + String.fromCharCode(byte), ''))
+        this.$dialog.show(ImageView, { url: src, width: 960, title: 'ggggg' })
+      }
+    },
+    showHistory (id) {
+      this.$refs.taskSider.load(id, 'history')
+    },
+    async delHistory (id) {
+      let confirm = await this.$dialog.confirm({
+        text: 'Do you really want to delete it?',
+        title: 'Warning'
+      })
+      if (!confirm) return
+      this.overlay = true
+      let rst = await this.$REST.delete(`/flow/process/${id}/history`, { reason: confirm })
+      this.overlay = false
+      if (rst) {
+        this.$refs.historyTable.load()
+      }
+    }
+  }
+}
 </script>
 <style scoped>
   .right-sider {

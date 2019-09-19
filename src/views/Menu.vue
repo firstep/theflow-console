@@ -32,10 +32,9 @@
   </v-list>
 </template>
 <script>
-import helper from "@/components/helper"
 export default {
   name: 'AppMenu',
-  data() {
+  data () {
     return {
       drawer: null,
       items: [
@@ -48,20 +47,20 @@ export default {
           icon: 'mdi-merge',
           title: 'PROCESS',
           items: [
-            { title: 'TODO', url: '/todo'},
-            { title: 'DEFINITION', url:"/definitions", resource: 'definition' },
-            { title: 'DESIGN', url: '/design', resource:'definition'},
-            { title: 'INSTANCE', url:'/process', resource: 'process' },
+            { title: 'TODO', url: '/todo' },
+            { title: 'DEFINITION', url: '/definitions', resource: 'definition' },
+            { title: 'DESIGN', url: '/design', resource: 'definition' },
+            { title: 'INSTANCE', url: '/process', resource: 'process' }
           ]
         }
       ]
     }
   },
   methods: {
-    focus() {
-      this.items.filter(item => item.active === true).forEach(item => item.active = false)
+    focus () {
+      this.items.filter(item => item.active === true).forEach(item => { item.active = false })
     },
-    isAccess(item) {
+    isAccess (item) {
       return this.$PERMISSION.accessable(item.resource)
     }
   }
