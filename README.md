@@ -1,5 +1,5 @@
 # TheFlow Console UI
-### Based on vue2 and vuetify2
+### Based on vue2 and vuetify2, integrated flowable-modeler v6.4.2
 
 ## Screenshots
 
@@ -7,7 +7,7 @@
 | -------------------------------------------------------------------- | -------------------------------------------- |
 | ![](./screenshots/1.png) Design Process                              | ![](./screenshots/2.png) Design Form         |
 | ![](./screenshots/3.png) Start Process                               | ![](./screenshots/4.png) Start With Form     |
-| ![](./screenshots/5.png) Todo Page)                                  | ![](./screenshots/6.png) Instance Management |
+| ![](./screenshots/5.png) Todo Page                                   | ![](./screenshots/6.png) Instance Management |
 
 ## Getting start
 ```bash
@@ -29,3 +29,7 @@ npm start # or npm run dev
 VUE_APP_BASEURL=http://localhost:8080
 ```
 > Get backend source code: [https://github.com/firstep/theflow](https://github.com/firstep/theflow)
+
+## Used in libraries
+ - axios
+ - vuetify-dialog
