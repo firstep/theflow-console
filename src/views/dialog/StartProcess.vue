@@ -9,8 +9,8 @@
       <v-stepper-items>
         <v-stepper-content step="1">
           <v-form v-model="settingValid" ref="settingForm">
-          <v-text-field label="BusinessKey" icon="mdi-account" v-model="businessKey" required :rules="textRule" />
-          <v-text-field label="ProcessName" icon="mdi-account" v-model="processName" required :rules="textRule" />
+          <v-text-field label="BusinessKey" icon="mdi-account" v-model="businessKey" :rules="keyRule" />
+          <v-text-field label="ProcessName" icon="mdi-account" v-model="processName" required :rules="nameRule" />
           <v-textarea label="Variables(JSON)" v-model="variables" clearable :rules="varRule" ></v-textarea>
           </v-form>
         </v-stepper-content>
@@ -44,24 +44,28 @@
         businessKey: '',
         processName: this.defName,
         variables: null,
-        textRule: [
-            v => !!v || 'Field is required',
-            v => v.length <= 60 || 'Field must be less than 10 characters.',
-            v => v.length >= 2 || 'Field must be more than 2 characters.'
+        keyRule: [
+          v => v.length <= 60 || 'Field must be less than 10 characters.',
+          v => !v || v.length >= 2 || 'Field must be more than 2 characters.'
+        ],
+        nameRule: [
+          v => !!v || 'Field is required',
+          v => v.length <= 60 || 'Field must be less than 10 characters.',
+          v => v.length >= 2 || 'Field must be more than 2 characters.'
         ],
         varRule: [
-            v => {
+          v => {
             if(v) {
-                try{
+              try{
                 JSON.parse(v)
                 return true
-                } catch(e) {
+              } catch(e) {
                 return "Variables must bu a JSON String."
-                }
+              }
             } else {
-                return true
+              return true
             }
-            }
+          }
         ]
       };
     },
