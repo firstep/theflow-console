@@ -30,7 +30,7 @@ export default {
     return {
       overlay: false,
       tab: null,
-      editable: this.$PERMISSION.editable('definition')
+      editable: this.$PERMISSION.has('definition:edit')
     }
   },
   methods: {
@@ -53,9 +53,7 @@ export default {
       let rst = await this.$REST.post(`/flow/definitions/models/${id}`)
       that.overlay = false
       if (rst) {
-        this.$dialog.message.info('Publish sucess!', {
-          position: 'top'
-        })
+        this.$TOAST.success('Publish sucess!')
       }
     })
 
@@ -73,13 +71,9 @@ export default {
       let rsts = await Promise.all(deploys)
       that.overlay = false
       if (rsts.find(v => !v)) {
-        this.$dialog.message.error('Publish faild!', {
-          position: 'top'
-        })
+        this.$TOAST.error('Publish faild!')
       } else {
-        this.$dialog.message.info('Publish sucess!', {
-          position: 'top'
-        })
+        this.$TOAST.success('Publish sucess!')
       }
     })
   },

@@ -10,11 +10,8 @@ helper.permission = {
       this.data = new Map()
     }
   },
-  accessable: function (resource) {
-    return !resource || this.data.has('flow:' + resource + ':access')
-  },
-  editable: function (resource) {
-    return !resource || this.data.has('flow:' + resource + ':edit')
+  has: function (permission) {
+    return !permission || this.data.has('flow:' + permission)
   }
 }
 
@@ -29,6 +26,22 @@ helper.session = {
   },
   init: function () {
     this.username = localStorage.getItem('username')
+  }
+}
+
+// position: [top|bottom|top-right|top-left|bottom-right|bottom-left]
+helper.toast = {
+  success: (message, position = 'top', vm = window.vm) => {
+    vm.$dialog.message.success(message, { position: position })
+  },
+  warning: (message, position = 'top', vm = window.vm) => {
+    vm.$dialog.message.warning(message, { position: position })
+  },
+  error: (message, position = 'top', vm = window.vm) => {
+    vm.$dialog.message.error(message, { position: position })
+  },
+  info: (message, position = 'top', vm = window.vm) => {
+    vm.$dialog.message.info(message, { position: position })
   }
 }
 

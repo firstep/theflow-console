@@ -64,9 +64,7 @@ export default {
           handle: () => {
             let defs = this.$refs.defTable.selected
             if (defs.length === 0) {
-              this.$dialog.message.info('SELECT PROCESS DEFINITION PLEASE!', {
-                position: 'top'
-              })
+              this.$TOAST.info('SELECT PROCESS DEFINITION PLEASE!')
               return null
             }
             this.$emit('submit', defs)

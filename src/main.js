@@ -12,6 +12,7 @@ Vue.config.productionTip = false
 Vue.prototype.$REST = Rest
 Vue.prototype.$HELPER = Helper
 Vue.prototype.$PERMISSION = Helper.permission
+Vue.prototype.$TOAST = Helper.toast
 Vue.use(VuetifyDialog, {
   context: {
     vuetify

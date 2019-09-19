@@ -49,7 +49,7 @@ export default {
         { text: 'VERSION', value: 'version' },
         { text: 'ACTIONS', value: 'action', sortable: false }
       ],
-      editable: this.$PERMISSION.editable('definition')
+      editable: this.$PERMISSION.has('definition:edit')
     }
   },
   methods: {
@@ -73,7 +73,8 @@ export default {
     },
     async start (defInst) {
       if (defInst.suspended) {
-        return this.$dialog.message.warning('Current definition is suspended.', { position: 'top' })
+        this.$TOAST.warning('Current definition is suspended.')
+        return
       }
       let rst = await this.$dialog.showAndWait(StartProcess, {
         width: 680,

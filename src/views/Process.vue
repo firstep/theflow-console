@@ -94,7 +94,7 @@ export default {
         { text: 'DELETE REASON', value: 'deleteReason' },
         { text: 'ACTIONS', value: 'action', sortable: false, align: 'center' }
       ],
-      editable: this.$PERMISSION.editable('process')
+      editable: this.$PERMISSION.has('process:edit')
     }
   },
   methods: {

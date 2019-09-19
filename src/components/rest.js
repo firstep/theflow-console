@@ -59,9 +59,7 @@ instance.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       window.vm.$router.push('/login')
     } else {
-      window.vm.$dialog.message.error((error.response && error.response.data.message) || error.message, {
-        position: 'top'
-      })
+      window.vm.$TOAST.error((error.response && error.response.data.message) || error.message)
     }
     return null// Promise.reject(error)
   }

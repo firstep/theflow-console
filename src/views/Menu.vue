@@ -3,7 +3,7 @@
     <slot />
     <template v-for="item in items">
       <!-- single item -->
-      <v-list-item v-if="!item.items && isAccess(item)" :key="item.title" :to="item.url" @click="focus">
+      <v-list-item v-if="!item.items && $PERMISSION.has(item.permission)" :key="item.title" :to="item.url" @click="focus">
         <v-list-item-icon>
           <v-icon v-text="item.icon"></v-icon>
         </v-list-item-icon>
@@ -12,7 +12,7 @@
         </v-list-item-content>
       </v-list-item>
       <!-- group item -->
-      <v-list-group v-if="item.items && isAccess(item)" v-model="item.active" :key="item.title" :prepend-icon="item.icon" no-action>
+      <v-list-group v-if="item.items && $PERMISSION.has(item.permission)" v-model="item.active" :key="item.title" :prepend-icon="item.icon" no-action>
         <template v-slot:activator>
           <v-list-item-content>
             <v-list-item-title v-text="item.title"></v-list-item-title>
@@ -20,7 +20,7 @@
         </template>
         <v-list-item-group color="indigo">
           <template v-for="subItem in item.items">
-          <v-list-item v-if="isAccess(subItem)" :key="subItem.title" :to="subItem.url">
+          <v-list-item v-if="$PERMISSION.has(subItem.permission)" :key="subItem.title" :to="subItem.url">
             <v-list-item-content>
               <v-list-item-title v-text="subItem.title"></v-list-item-title>
             </v-list-item-content>
@@ -48,9 +48,9 @@ export default {
           title: 'PROCESS',
           items: [
             { title: 'TODO', url: '/todo' },
-            { title: 'DEFINITION', url: '/definitions', resource: 'definition' },
-            { title: 'DESIGN', url: '/design', resource: 'definition' },
-            { title: 'INSTANCE', url: '/process', resource: 'process' }
+            { title: 'DEFINITION', url: '/definitions', permission: 'definition:access' },
+            { title: 'DESIGN', url: '/design', permission: 'definition:edit' },
+            { title: 'INSTANCE', url: '/process', permission: 'process:access' }
           ]
         }
       ]
@@ -59,9 +59,6 @@ export default {
   methods: {
     focus () {
       this.items.filter(item => item.active === true).forEach(item => { item.active = false })
-    },
-    isAccess (item) {
-      return this.$PERMISSION.accessable(item.resource)
     }
   }
 }

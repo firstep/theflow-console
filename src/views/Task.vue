@@ -121,9 +121,7 @@ export default {
     preAct: function () {
       let tasks = this.$refs.runningTaskTable.selected
       if (tasks.length === 0) {
-        this.$dialog.message.info('SELECT TASK PLEASE!', {
-          position: 'top'
-        })
+        this.$TOAST.info('SELECT TASK PLEASE!')
         return null
       }
       return tasks[0]
