@@ -1,12 +1,21 @@
 # TheFlow Console UI
-### Baseed on vue2 and vuetify2
+### Based on vue2 and vuetify2
+
+## Screenshots
+
+| -                                                                    | -                                            |
+| -------------------------------------------------------------------- | -------------------------------------------- |
+| ![](./screenshots/1.png) Design Process                              | ![](./screenshots/2.png) Design Form         |
+| ![](./screenshots/3.png) Start Process                               | ![](./screenshots/4.png) Start With Form     |
+| ![](./screenshots/5.png) Todo Page)                                  | ![](./screenshots/6.png) Instance Management |
 
 ## Getting start
-1. `git clone https://github.com/firstep/theflow-console.git`
-1. `npm install`
-1. `npm run dev`
-
-> Use cnpm instead `npm` in china
+```bash
+git clone https://github.com/firstep/theflow-console.git
+cd theflow-console
+npm i # or cnpm i
+npm start # or npm run dev
+```
 
 ## Config
 > `.env - for production environment`
