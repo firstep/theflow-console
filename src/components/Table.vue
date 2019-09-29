@@ -6,7 +6,7 @@
       :single-select="singleSelect"
       :headers="headers"
       :items="rows"
-      :items-per-page="3"
+      :items-per-page="pageSize"
       :loading="loading"
       loading-text="Loading... Please wait"
       hide-default-footer>
@@ -29,9 +29,6 @@
           {{item[head.value]}}
         </slot>
       </template>
-      <!-- <template v-slot:[`item.${actionColumn}`]="{ item }">
-        <slot name="action" :item="item" />
-      </template> -->
     </v-data-table>
   </div>
 </template>
@@ -66,6 +63,7 @@ export default {
   },
   data () {
     return {
+      _url: null,
       page: 1,
       total: 0,
       rows: [],
@@ -86,15 +84,19 @@ export default {
     }
   },
   methods: {
-    paging (page) {
+    paging () {
       this.load()
     },
-    async load (url = this.url) {
-      // url = url || this.url
-      if (!url) return
+    async load (url) {
+      if(url) {
+        this.page = 1
+        this._url = url
+      } else if(!this._url) {
+        return
+      }
       this.selected = []
       this.loading = true
-      let rst = await this.$REST.get(url, this.requestHandler && this.requestHandler(this.page, this.pageSize))
+      let rst = await this.$REST.get(this._url, this.requestHandler && this.requestHandler(this.page, this.pageSize))
       this.loading = false
       if (rst) {
         let data = this.responseHandler && this.responseHandler(rst)
@@ -104,7 +106,7 @@ export default {
     }
   },
   mounted () {
-    this.load()
+    this.load(this.url)
   }
 }
 

@@ -56,7 +56,7 @@
   </v-toolbar>
   <AppTable ref="historyTaskTable" :headers="historyHeaders" v-show="tag == 'history'">
     <template #durationMills="{item}">
-      {{((item.durationMills % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toFixed(2) + 'H'}}
+      {{mills2hours(item.durationMills)}}
     </template>
   </AppTable>
   <AppTable ref="runningTaskTable" :showSelect=true :singleSelect=true :headers="runningHeaders" v-show="tag == 'running'">
@@ -206,6 +206,10 @@ export default {
         // this.$refs.runningTable.load();
         this.$emit('updated')
       }
+    },
+    mills2hours: mills => {
+      let hourMiils = 1000 * 60 * 60
+      return (parseInt(mills / (hourMiils)) + (mills % (hourMiils)) / (hourMiils)).toFixed(2) + 'H'
     }
   }
 }
