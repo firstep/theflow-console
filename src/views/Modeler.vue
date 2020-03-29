@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import DefinitionSel from '@/views/dialog/DefinitionSel.vue'
+// import DefinitionSel from '@/views/dialog/DefinitionSel.vue'
 export default {
   data () {
     return {
