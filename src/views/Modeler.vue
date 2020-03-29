@@ -57,29 +57,29 @@ export default {
       }
     })
 
-    window.vm.$on('publish-form', async function (id, key) {
-      if (!id || !key) return
-      let rst = await this.$dialog.showAndWait(DefinitionSel, {
-        width: 640,
-        formKey: key,
-        persistent: true
-      })
-      if (!rst) return
+    // window.vm.$on('publish-form', async function (id, key) {
+    //   if (!id || !key) return
+    //   let rst = await this.$dialog.showAndWait(DefinitionSel, {
+    //     width: 640,
+    //     formKey: key,
+    //     persistent: true
+    //   })
+    //   if (!rst) return
 
-      that.overlay = true
-      let deploys = rst.map(def => this.$REST.post(`/flow/definitions/${def.id}/forms/models/${id}`))
-      let rsts = await Promise.all(deploys)
-      that.overlay = false
-      if (rsts.find(v => !v)) {
-        this.$TOAST.error('Publish faild!')
-      } else {
-        this.$TOAST.success('Publish sucess!')
-      }
-    })
+    //   that.overlay = true
+    //   let deploys = rst.map(def => this.$REST.post(`/flow/definitions/${def.id}/forms/models/${id}`))
+    //   let rsts = await Promise.all(deploys)
+    //   that.overlay = false
+    //   if (rsts.find(v => !v)) {
+    //     this.$TOAST.error('Publish faild!')
+    //   } else {
+    //     this.$TOAST.success('Publish sucess!')
+    //   }
+    // })
   },
   beforeDestroy () {
     window.vm.$off('publish-process')
-    window.vm.$off('publish-form')
+    // window.vm.$off('publish-form')
   }
 }
 </script>

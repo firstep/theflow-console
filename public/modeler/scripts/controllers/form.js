@@ -119,14 +119,6 @@ angular.module('flowableModeler')
       }
     };
 
-    $scope.publish = function() {
-      if(window.parent && window.parent.vm) {
-        window.parent.vm.$emit("publish-form", $scope.model.form.id, $scope.model.form.key)
-      } else {
-        console.error('This page must be nested in TheFlow.')
-      }
-    };
-
     $scope.toggleHistory = function($event) {
       if (!$scope.historyState) {
         var state = {};
